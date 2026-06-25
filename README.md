@@ -15,19 +15,19 @@ A cargo tracking and management system developed with **ASP.NET Core MVC**.
 
 ## Home
 
-![Home](Screenshots/Home.png)
+![Home](WebCargo/Screenshots/Home.png)
 
 ---
 
 ## Cargo Management
 
-![Cargo Management](Screenshots/Cargo.png)
+![Cargo Management](WebCargo/Screenshots/Cargo.png)
 
 ---
 
 ## User Panel
 
-![User Panel](Screenshots/User.png)
+![User Panel](WebCargo/Screenshots/User.png)
 
 ---
 
