@@ -1,0 +1,147 @@
+﻿<h1>Giriş Ekranı</h1>
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+
+<style>
+    .menuButton {
+    background: #f5f5f5;
+    color: black;
+    border: 1px solid black;
+    transition: 0.2s;
+    }
+
+    .menuButton:hover {
+    background: #222;
+    color: white;
+    cursor: pointer;
+    }
+</style>
+
+
+<div style="
+    width:340px;
+    margin:auto;
+    margin-top:100px;
+    border:1px solid gray;
+    padding:20px;
+    border-radius:10px;">
+
+    <form method="post">
+
+        <div>
+            <label>Kullanıcı Adı</label>
+            <br />
+
+            <input name="username"
+                   type="text"
+                   style="width:100%;" />
+        </div>
+
+        <br />
+
+        <div>
+            <label>Şifre</label>
+            <br />
+
+            <input name="password"
+                   type="password"
+                   style="width:100%;" />
+        </div>
+
+        <div style="
+            margin-top:5px;
+            margin-bottom:5px;">
+
+            <a href="/Login/ForgotPassword">
+                Şifremi Unuttum
+            </a>
+
+        </div>
+
+        <br />
+
+        @if (TempData["Message"] != null)
+        {
+            <div style="
+                color:green;">
+                @TempData["Message"]
+            </div>
+        }
+
+        @if ((ViewBag.FailCount ?? 0) >= 3)
+        {
+            <div class="g-recaptcha"
+                 data-sitekey="@ViewBag.SiteKey"></div>
+
+
+            <div id="captchaError"
+                 style="color:red;display:none;margin-bottom:10px;">
+                Lütfen captcha doğrulayın.
+            </div>
+        }
+
+        <noscript>
+            <div style="color:red;">
+                Bu sayfayı kullanmak için JavaScript etkin olmalıdır.
+            </div>
+        </noscript>
+
+        @if (ViewBag.Error != null)
+        {
+            <div style="
+                color:red;
+                margin-bottom:10px;">
+                @ViewBag.Error
+            </div>
+        }
+
+        <br />
+
+
+        <div style="
+            display:flex;
+            gap:10px;
+            margin-bottom:10px;">
+
+            <button class="menuButton"
+                    id="adminButton"
+                    type="submit"
+                    formaction="/Login/AdminLogin"
+                    style="flex:1;">
+                Giriş Yap
+            </button>
+
+            <button class="menuButton"
+                    type="submit"
+                    formaction="/Login/Guest"
+                    style="flex:1;">
+                Misafir Girişi
+            </button>
+
+        </div>
+
+        <button class="menuButton"
+                type="button"
+                onclick="location.href='/Login/Register'"
+                style="width:100%;">
+            Kayıt Ol
+        </button>
+
+    </form>
+
+</div>
+
+<script>
+    document.getElementById("adminButton")
+    .addEventListener("click", function (e)
+    {
+    if (grecaptcha.getResponse() == "")
+    {
+    e.preventDefault();
+
+    document.getElementById("captchaError")
+    .style.display = "block";
+    }
+    });
+</script>

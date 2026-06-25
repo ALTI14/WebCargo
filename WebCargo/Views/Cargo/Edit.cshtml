@@ -1,0 +1,169 @@
+﻿@model WebCargo.Models.Cargo
+
+<style>
+    .menuButton {
+        background: #f5f5f5;
+        color: black;
+        border: 1px solid #bdbdbd;
+        border-radius: 5px;
+        transition: 0.2s;
+    }
+
+        .menuButton:hover {
+            background: #222;
+            color: white;
+            cursor: pointer;
+        }
+</style>
+
+<div style="
+    width:340px;
+    margin:auto;
+    margin-top:100px;
+    border:1px solid gray;
+    padding:20px;
+    border-radius:10px;">
+
+    <h1>Kargo Düzenle</h1>
+
+    <form asp-action="Edit"
+          method="post">
+
+        <input type="hidden"
+               name="id"
+               value="@Model.Id" />
+
+        <div>
+            <label>Takip No</label>
+            <br />
+
+            <input value="@Model.TrackingNumber"
+                   readonly
+                   style="width:100%;" />
+        </div>
+
+        <br />
+
+        <div>
+            <label>Ad Soyad</label>
+            <br />
+
+            <input name="alici"
+                   value="@Model.Alici"
+                   type="text"
+                   required
+                   style="width:100%;" />
+        </div>
+
+        <br />
+
+        @if (ViewBag.Role == "Admin")
+        {
+            <div>
+                <label>T.C. Kimlik No</label>
+                <br />
+
+                <input name="tc"
+                       value="@Model.Tc"
+                       type="text"
+                       minlength="11"
+                       maxlength="11"
+                       pattern="[0-9]{11}"
+                       oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+                       style="width:100%;" />
+            </div>
+
+            <br />
+        }
+        else
+        {
+            <div>
+                <label>T.C. Kimlik No</label>
+                <br />
+
+                <input value="@Model.Tc"
+                       readonly
+                       style="width:100%;" />
+            </div>
+
+            <br />
+        }
+
+        <div>
+            <label>E-Posta</label>
+            <br />
+
+            <input name="email"
+                   value="@Model.Email"
+                   type="email"
+                   required
+                   style="width:100%;" />
+        </div>
+
+        <br />
+
+        <div>
+            <label>Adres</label>
+            <br />
+
+            <textarea name="adres"
+                      rows="4"
+                      required
+                      style="width:100%;">@Model.Adres</textarea>
+        </div>
+
+        <br />
+
+        <div>
+            <label>Durum</label>
+            <br />
+
+            <select name="durum"
+                    style="width:100%;">
+
+                <option selected="@(Model.Durum == "Hazırlanıyor")">
+                    Hazırlanıyor
+                </option>
+
+                <option selected="@(Model.Durum == "Yolda")">
+                    Yolda
+                </option>
+
+                <option selected="@(Model.Durum == "Teslim Edildi")">
+                    Teslim Edildi
+                </option>
+
+            </select>
+        </div>
+
+        <br />
+
+        <button class="menuButton"
+                type="submit"
+                style="width:100%;">
+            Kaydet
+        </button>
+
+        <br />
+        <br />
+
+        <button class="menuButton"
+                type="button"
+                onclick="location.href='/Cargo'"
+                style="width:100%;">
+            Kargolara Dön
+        </button>
+
+        @if (ViewBag.Error != null)
+        {
+            <div style="
+                color:red;
+                text-align:center;
+                margin-top:10px;">
+                @ViewBag.Error
+            </div>
+        }
+
+    </form>
+
+</div>

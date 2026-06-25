@@ -1,0 +1,81 @@
+﻿<h1>Kod Doğrulama</h1>
+
+
+<style>
+	.menuButton {
+		background: #f5f5f5;
+		color: black;
+		border: 1px solid black;
+		transition: 0.2s;
+	}
+
+		.menuButton:hover {
+			background: #222;
+			color: white;
+			cursor: pointer;
+		}
+</style>
+
+
+<div style="
+	width:340px;
+	margin:auto;
+	margin-top:100px;
+	border:1px solid gray;
+	padding: 20px;
+	border-radius:10px;">
+
+	@if (ViewBag.Error != null)
+	{
+
+		<div style="
+
+			color:red;
+			text-align:center;
+			margin-bottom:10px;">
+			@ViewBag.Error
+		</div>
+	}
+
+	@if (TempData["Message"] != null)
+	{
+		<div style="color:green;
+					margin-bottom:10px;">
+			@TempData["Message"]
+		</div>
+	}
+
+<form method="post">
+
+	<div>
+		<label>Doğrulama Kodu</label>
+		<br />
+
+		<input name="code"
+		type="text"
+		required
+		style="width:100%;"/>
+
+	</div>
+
+	<br />
+
+		<button class="menuButton"
+				type="submit"
+				style="width:100%";>
+			Doğrula
+		</button>
+
+		<br />
+		<br />
+
+		<button class="menuButton"
+				type="button"
+				onclick="location.href='/Login/ForgotPassword'"
+				style="width:100%;">
+			Geri
+		</button>
+
+	</form>
+
+</div>

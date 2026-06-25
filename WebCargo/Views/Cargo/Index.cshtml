@@ -1,0 +1,206 @@
+﻿@model List<WebCargo.Models.Cargo>
+
+<style>
+    .menuButton {
+        background: #f5f5f5;
+        color: black;
+        border: 1px solid black;
+        transition: 0.2s;
+        padding: 2px 10px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+        .menuButton:hover {
+            background: #222;
+            color: white;
+            cursor: pointer;
+        }
+</style>
+
+<div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;">
+
+    <h1>Kargo Takip Sistemi</h1>
+
+    <div>
+        Kullanıcı Türü:
+        <b>@ViewBag.Role</b>
+    </div>
+
+</div>
+
+<hr />
+
+@if (TempData["Success"] != null)
+{
+    <div style="
+        background:#d4edda;
+        color:#155724;
+        border:1px solid #c3e6cb;
+        padding:10px;
+        margin-bottom:15px;">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div style="
+        background:#f8d7da;
+        color:#721c24;
+        border:1px solid #f5c6cb;
+        padding:10px;
+        margin-bottom:15px;">
+        @TempData["Error"]
+    </div>
+}
+
+<div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;">
+
+    <form method="get">
+        <input type="text"
+               name="search"
+               placeholder="Takip No ara..." />
+
+        <button class="menuButton"
+                type="submit">
+            Ara
+        </button>
+    </form>
+
+    @if (ViewBag.Role == "Admin")
+    {
+        <a class="menuButton"
+           asp-action="Create">
+            Kargo Oluştur
+        </a>
+    }
+
+</div>
+
+<br />
+
+@if (Model.Any())
+{
+    <table border="1" cellpadding="10">
+
+        <tr>
+            <th>Takip No</th>
+            <th>Alıcı</th>
+            <th>TC</th>
+            <th>Adres</th>
+            <th>Email</th>
+            <th>Durum</th>
+
+            @if (ViewBag.Role == "Admin" ||
+                 ViewBag.Role == "User")
+            {
+                <th style="text-align:center;">
+                    İşlemler
+                </th>
+            }
+        </tr>
+
+        @foreach (var cargo in Model)
+        {
+            <tr>
+
+                <td>@cargo.TrackingNumber</td>
+
+                @if (ViewBag.Role == "Guest")
+                {
+                    <td>@WebCargo.Controllers.CargoController.MaskName(cargo.Alici)</td>
+                    <td>***********</td>
+                    <td>***********</td>
+                    <td>@WebCargo.Controllers.CargoController.MaskEmail(cargo.Email)</td>
+                }
+                else
+                {
+                    <td>@cargo.Alici</td>
+                    <td>@cargo.Tc</td>
+                    <td>@cargo.Adres</td>
+                    <td>@cargo.Email</td>
+                }
+
+                <td>@cargo.Durum</td>
+
+                @if (ViewBag.Role == "Admin" ||
+                     ViewBag.Role == "User")
+                {
+                    <td>
+
+                        <div style="
+                            display:flex;
+                            gap:5px;
+                            align-items:center;">
+
+                            <a asp-action="Edit"
+                               asp-route-id="@cargo.Id"
+                               class="menuButton">
+                                Düzenle
+                            </a>
+
+                            @if (ViewBag.Role == "Admin")
+                            {
+                                <form asp-action="Delete"
+                                      method="post"
+                                      style="margin:0;">
+
+                                    <input type="hidden"
+                                           name="id"
+                                           value="@cargo.Id" />
+
+                                    <button class="menuButton"
+                                            type="submit">
+                                        Sil
+                                    </button>
+
+                                </form>
+                            }
+
+                        </div>
+
+                    </td>
+                }
+
+            </tr>
+        }
+
+    </table>
+
+    <br />
+
+    <div style="
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        gap:10px;">
+
+        @if (ViewBag.Page > 1)
+        {
+            <a class="menuButton"
+            asp-route-page="@(ViewBag.Page - 1)">
+                Önceki
+            </a>
+        }
+
+        <span>
+            Sayfa @ViewBag.Page
+        </span>
+
+        @if (ViewBag.HasNextPage)
+        {
+            <a class="menuButton"
+            asp-route-page="@(ViewBag.Page + 1)">
+                Sonraki
+            </a>
+        }
+
+    </div>
+}
